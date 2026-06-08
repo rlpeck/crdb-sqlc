@@ -7,6 +7,7 @@ import (
 	"github.com/sqlc-dev/sqlc/internal/analyzer"
 	"github.com/sqlc-dev/sqlc/internal/config"
 	"github.com/sqlc-dev/sqlc/internal/dbmanager"
+	"github.com/sqlc-dev/sqlc/internal/engine/cockroachdb"
 	"github.com/sqlc-dev/sqlc/internal/engine/dolphin"
 	"github.com/sqlc-dev/sqlc/internal/engine/postgresql"
 	pganalyze "github.com/sqlc-dev/sqlc/internal/engine/postgresql/analyzer"
@@ -101,6 +102,34 @@ func NewCompiler(conf config.SQL, combo config.CombinedSettings, parserOpts opts
 			pgAnalyzer := pganalyze.New(c.client, *conf.Database)
 			c.analyzer = analyzer.Cached(pgAnalyzer, combo.Global, *conf.Database)
 			// Create the expander using the analyzer as the column getter
+			c.expander = expander.New(c.analyzer, parser, parser)
+		} else if conf.Database != nil {
+			if conf.Analyzer.Database.IsEnabled() {
+				c.analyzer = analyzer.Cached(
+					pganalyze.New(c.client, *conf.Database),
+					combo.Global,
+					*conf.Database,
+				)
+			}
+		}
+	case config.EngineCockroachDB:
+		parser := cockroachdb.NewParser()
+		c.parser = parser
+		c.catalog = cockroachdb.NewCatalog()
+		c.selector = newDefaultSelector()
+
+		// CockroachDB is PostgreSQL wire-compatible, so the database-backed
+		// analyzer reuses the PostgreSQL analyzer (pgx + pg_catalog introspection).
+		if databaseOnlyMode {
+			if conf.Database == nil {
+				return nil, fmt.Errorf("analyzer.database: only requires database configuration")
+			}
+			if conf.Database.URI == "" && !conf.Database.Managed {
+				return nil, fmt.Errorf("analyzer.database: only requires database.uri or database.managed")
+			}
+			c.databaseOnlyMode = true
+			crdbAnalyzer := pganalyze.New(c.client, *conf.Database)
+			c.analyzer = analyzer.Cached(crdbAnalyzer, combo.Global, *conf.Database)
 			c.expander = expander.New(c.analyzer, parser, parser)
 		} else if conf.Database != nil {
 			if conf.Analyzer.Database.IsEnabled() {

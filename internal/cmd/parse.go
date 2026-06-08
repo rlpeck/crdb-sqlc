@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/sqlc-dev/sqlc/internal/engine/clickhouse"
+	"github.com/sqlc-dev/sqlc/internal/engine/cockroachdb"
 	"github.com/sqlc-dev/sqlc/internal/engine/dolphin"
 	"github.com/sqlc-dev/sqlc/internal/engine/postgresql"
 	"github.com/sqlc-dev/sqlc/internal/engine/sqlite"
@@ -78,8 +79,11 @@ Examples:
 		case "clickhouse":
 			parser := clickhouse.NewParser()
 			stmts, err = parser.Parse(input)
+		case "cockroachdb", "crdb", "cockroach":
+			parser := cockroachdb.NewParser()
+			stmts, err = parser.Parse(input)
 		default:
-			return fmt.Errorf("unsupported dialect: %s (use postgresql, mysql, sqlite, or clickhouse)", dialect)
+			return fmt.Errorf("unsupported dialect: %s (use postgresql, mysql, sqlite, clickhouse, or cockroachdb)", dialect)
 		}
 		if err != nil {
 			return fmt.Errorf("parse error: %w", err)

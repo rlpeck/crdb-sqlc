@@ -37,7 +37,7 @@ Each mapping in the `sql` collection has the following keys:
 - `name`:
   - An human-friendly identifier for this query set. Optional.
 - `engine`:
-  - One of `postgresql`, `mysql` or `sqlite`.
+  - One of `postgresql`, `mysql`, `sqlite` or `cockroachdb`.
 - `schema`:
   - Directory of SQL migrations or path to single SQL file; or a list of paths.
 - `queries`:
@@ -417,7 +417,7 @@ Each mapping in the `packages` collection has the following keys:
 - `schema`:
   - Directory of SQL migrations or path to single SQL file; or a list of paths.
 - `engine`:
-  - Either `postgresql` or `mysql`. Defaults to `postgresql`.
+  - One of `postgresql`, `mysql`, `sqlite` or `cockroachdb`. Defaults to `postgresql`.
 - `sql_package`:
   - Either `pgx/v4`, `pgx/v5` or `database/sql`. Defaults to `database/sql`.
 - `overrides`:

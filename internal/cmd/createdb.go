@@ -70,6 +70,8 @@ func CreateDB(ctx context.Context, dir, filename, querySetName string, o *Option
 		// pass
 	case config.EnginePostgreSQL:
 		// pass
+	case config.EngineCockroachDB:
+		// pass (PostgreSQL wire-compatible)
 	default:
 		return fmt.Errorf("createdb does not support the %s engine", queryset.Engine)
 	}

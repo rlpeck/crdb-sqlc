@@ -51,9 +51,10 @@ func (p *Paths) UnmarshalYAML(unmarshal func(any) error) error {
 }
 
 const (
-	EngineMySQL      Engine = "mysql"
-	EnginePostgreSQL Engine = "postgresql"
-	EngineSQLite     Engine = "sqlite"
+	EngineMySQL       Engine = "mysql"
+	EnginePostgreSQL  Engine = "postgresql"
+	EngineSQLite      Engine = "sqlite"
+	EngineCockroachDB Engine = "cockroachdb"
 )
 
 type Config struct {
