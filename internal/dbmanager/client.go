@@ -61,6 +61,8 @@ func (m *ManagedClient) CreateDatabase(ctx context.Context, req *CreateDatabaseR
 		// pass
 	case config.EnginePostgreSQL:
 		// pass
+	case config.EngineCockroachDB:
+		// CockroachDB is PostgreSQL wire-compatible; the pgx-based path below works as-is.
 	default:
 		return nil, fmt.Errorf("unsupported engine: %s", engine)
 	}
