@@ -511,7 +511,7 @@ func (c *checker) checkSQL(ctx context.Context, s config.SQL) error {
 		}()
 
 		switch s.Engine {
-		case config.EnginePostgreSQL:
+		case config.EnginePostgreSQL, config.EngineCockroachDB:
 			conn, err := pgx.Connect(ctx, dburl)
 			if err != nil {
 				return fmt.Errorf("database: connection error: %s", err)

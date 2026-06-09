@@ -57,7 +57,7 @@ func (c *Compiler) quoteIdent(ident string) string {
 	// underscores, digits (0-9), or dollar signs ($).
 	//
 	// https://www.postgresql.org/docs/current/sql-syntax-lexical.html#SQL-SYNTAX-IDENTIFIERS
-	if c.conf.Engine == config.EnginePostgreSQL {
+	if c.conf.Engine == config.EnginePostgreSQL || c.conf.Engine == config.EngineCockroachDB {
 		// camelCase means the column is also camelCase
 		if strings.ToLower(ident) != ident {
 			return c.quote(ident)
