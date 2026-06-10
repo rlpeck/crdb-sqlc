@@ -3,6 +3,9 @@ __pycache__
 .DS_Store
 .*.swp
 
+# Locally built sqlc binary (root only; not cmd/sqlc)
+/sqlc
+
 # Devenv
 .envrc
 .direnv

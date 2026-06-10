@@ -6,7 +6,7 @@ import (
 
 	"github.com/cockroachdb/cockroachdb-parser/pkg/sql/sem/tree"
 
-	"github.com/sqlc-dev/sqlc/internal/sql/ast"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/ast"
 )
 
 // cc converts a cockroachdb-parser tree.Statement into sqlc's PostgreSQL-shaped

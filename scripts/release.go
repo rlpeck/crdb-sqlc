@@ -32,7 +32,7 @@ func main() {
 	}
 
 	if *docker {
-		x := "-extldflags \"-static\" -X github.com/sqlc-dev/sqlc/internal/cmd.version=" + version
+		x := "-extldflags \"-static\" -X github.com/rlpeck/crdb-sqlc/internal/cmd.version=" + version
 		args := []string{
 			"build",
 			"-a",

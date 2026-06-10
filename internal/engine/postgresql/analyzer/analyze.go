@@ -11,15 +11,15 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	core "github.com/sqlc-dev/sqlc/internal/analysis"
-	"github.com/sqlc-dev/sqlc/internal/config"
-	"github.com/sqlc-dev/sqlc/internal/dbmanager"
-	"github.com/sqlc-dev/sqlc/internal/shfmt"
-	"github.com/sqlc-dev/sqlc/internal/sql/ast"
-	"github.com/sqlc-dev/sqlc/internal/sql/catalog"
-	"github.com/sqlc-dev/sqlc/internal/sql/named"
-	"github.com/sqlc-dev/sqlc/internal/sql/sqlerr"
-	"github.com/sqlc-dev/sqlc/internal/sqlcdebug"
+	core "github.com/rlpeck/crdb-sqlc/internal/analysis"
+	"github.com/rlpeck/crdb-sqlc/internal/config"
+	"github.com/rlpeck/crdb-sqlc/internal/dbmanager"
+	"github.com/rlpeck/crdb-sqlc/internal/shfmt"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/ast"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/catalog"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/named"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/sqlerr"
+	"github.com/rlpeck/crdb-sqlc/internal/sqlcdebug"
 )
 
 var debugDatabases = sqlcdebug.New("databases")

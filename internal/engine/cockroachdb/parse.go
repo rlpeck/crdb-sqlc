@@ -7,9 +7,9 @@ import (
 	"github.com/cockroachdb/cockroachdb-parser/pkg/sql/parser"
 	"github.com/cockroachdb/cockroachdb-parser/pkg/sql/pgwire/pgerror"
 
-	"github.com/sqlc-dev/sqlc/internal/source"
-	"github.com/sqlc-dev/sqlc/internal/sql/ast"
-	"github.com/sqlc-dev/sqlc/internal/sql/sqlerr"
+	"github.com/rlpeck/crdb-sqlc/internal/source"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/ast"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/sqlerr"
 )
 
 func NewParser() *Parser {

@@ -9,13 +9,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sqlc-dev/sqlc/internal/config"
-	"github.com/sqlc-dev/sqlc/internal/debug"
-	"github.com/sqlc-dev/sqlc/internal/engine/dolphin"
-	"github.com/sqlc-dev/sqlc/internal/engine/postgresql"
-	"github.com/sqlc-dev/sqlc/internal/engine/sqlite"
-	"github.com/sqlc-dev/sqlc/internal/sql/ast"
-	"github.com/sqlc-dev/sqlc/internal/sql/format"
+	"github.com/rlpeck/crdb-sqlc/internal/config"
+	"github.com/rlpeck/crdb-sqlc/internal/debug"
+	"github.com/rlpeck/crdb-sqlc/internal/engine/dolphin"
+	"github.com/rlpeck/crdb-sqlc/internal/engine/postgresql"
+	"github.com/rlpeck/crdb-sqlc/internal/engine/sqlite"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/ast"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/format"
 )
 
 // sqlParser is an interface for SQL parsers

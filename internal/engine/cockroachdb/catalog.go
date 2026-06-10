@@ -1,7 +1,7 @@
 package cockroachdb
 
 import (
-	"github.com/sqlc-dev/sqlc/internal/sql/catalog"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/catalog"
 )
 
 // NewCatalog returns a CockroachDB-specific catalog. CockroachDB uses the

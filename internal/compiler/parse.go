@@ -6,14 +6,14 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/sqlc-dev/sqlc/internal/debug"
-	"github.com/sqlc-dev/sqlc/internal/metadata"
-	"github.com/sqlc-dev/sqlc/internal/opts"
-	"github.com/sqlc-dev/sqlc/internal/source"
-	"github.com/sqlc-dev/sqlc/internal/sql/ast"
-	"github.com/sqlc-dev/sqlc/internal/sql/astutils"
-	"github.com/sqlc-dev/sqlc/internal/sql/validate"
-	"github.com/sqlc-dev/sqlc/internal/sqlcdebug"
+	"github.com/rlpeck/crdb-sqlc/internal/debug"
+	"github.com/rlpeck/crdb-sqlc/internal/metadata"
+	"github.com/rlpeck/crdb-sqlc/internal/opts"
+	"github.com/rlpeck/crdb-sqlc/internal/source"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/ast"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/astutils"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/validate"
+	"github.com/rlpeck/crdb-sqlc/internal/sqlcdebug"
 )
 
 var debugDumpAST = sqlcdebug.New("dumpast")

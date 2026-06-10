@@ -6,7 +6,7 @@ import (
 
 	chast "github.com/sqlc-dev/doubleclick/ast"
 
-	"github.com/sqlc-dev/sqlc/internal/sql/ast"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/ast"
 )
 
 type cc struct {
