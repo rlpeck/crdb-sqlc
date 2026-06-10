@@ -14,19 +14,19 @@ import (
 
 	"google.golang.org/grpc"
 
-	"github.com/sqlc-dev/sqlc/internal/codegen/golang"
-	genjson "github.com/sqlc-dev/sqlc/internal/codegen/json"
-	"github.com/sqlc-dev/sqlc/internal/compiler"
-	"github.com/sqlc-dev/sqlc/internal/config"
-	"github.com/sqlc-dev/sqlc/internal/config/convert"
-	"github.com/sqlc-dev/sqlc/internal/debug"
-	"github.com/sqlc-dev/sqlc/internal/ext"
-	"github.com/sqlc-dev/sqlc/internal/ext/process"
-	"github.com/sqlc-dev/sqlc/internal/ext/wasm"
-	"github.com/sqlc-dev/sqlc/internal/multierr"
-	"github.com/sqlc-dev/sqlc/internal/opts"
-	"github.com/sqlc-dev/sqlc/internal/plugin"
-	"github.com/sqlc-dev/sqlc/internal/sqlcdebug"
+	"github.com/rlpeck/crdb-sqlc/internal/codegen/golang"
+	genjson "github.com/rlpeck/crdb-sqlc/internal/codegen/json"
+	"github.com/rlpeck/crdb-sqlc/internal/compiler"
+	"github.com/rlpeck/crdb-sqlc/internal/config"
+	"github.com/rlpeck/crdb-sqlc/internal/config/convert"
+	"github.com/rlpeck/crdb-sqlc/internal/debug"
+	"github.com/rlpeck/crdb-sqlc/internal/ext"
+	"github.com/rlpeck/crdb-sqlc/internal/ext/process"
+	"github.com/rlpeck/crdb-sqlc/internal/ext/wasm"
+	"github.com/rlpeck/crdb-sqlc/internal/multierr"
+	"github.com/rlpeck/crdb-sqlc/internal/opts"
+	"github.com/rlpeck/crdb-sqlc/internal/plugin"
+	"github.com/rlpeck/crdb-sqlc/internal/sqlcdebug"
 )
 
 var debugDumpCatalog = sqlcdebug.New("dumpcatalog")

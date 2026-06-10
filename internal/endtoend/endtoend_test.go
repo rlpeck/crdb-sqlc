@@ -14,12 +14,12 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 
-	"github.com/sqlc-dev/sqlc/internal/cmd"
-	"github.com/sqlc-dev/sqlc/internal/config"
-	"github.com/sqlc-dev/sqlc/internal/opts"
-	"github.com/sqlc-dev/sqlc/internal/sqlcdebug"
-	"github.com/sqlc-dev/sqlc/internal/sqltest/docker"
-	"github.com/sqlc-dev/sqlc/internal/sqltest/native"
+	"github.com/rlpeck/crdb-sqlc/internal/cmd"
+	"github.com/rlpeck/crdb-sqlc/internal/config"
+	"github.com/rlpeck/crdb-sqlc/internal/opts"
+	"github.com/rlpeck/crdb-sqlc/internal/sqlcdebug"
+	"github.com/rlpeck/crdb-sqlc/internal/sqltest/docker"
+	"github.com/rlpeck/crdb-sqlc/internal/sqltest/native"
 )
 
 // withSQLCDEBUG installs the given SQLCDEBUG-formatted string for the

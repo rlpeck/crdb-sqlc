@@ -10,8 +10,8 @@ import (
 	"github.com/sqlc-dev/marino/opcode"
 	"github.com/sqlc-dev/marino/types"
 
-	"github.com/sqlc-dev/sqlc/internal/debug"
-	"github.com/sqlc-dev/sqlc/internal/sql/ast"
+	"github.com/rlpeck/crdb-sqlc/internal/debug"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/ast"
 )
 
 type cc struct {

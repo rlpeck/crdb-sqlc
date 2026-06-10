@@ -4,9 +4,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sqlc-dev/sqlc/internal/sql/ast"
-	"github.com/sqlc-dev/sqlc/internal/sql/astutils"
-	"github.com/sqlc-dev/sqlc/internal/sql/named"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/ast"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/astutils"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/named"
 )
 
 func parseOne(t *testing.T, sql string) *ast.RawStmt {

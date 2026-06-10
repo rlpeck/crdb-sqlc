@@ -3,9 +3,9 @@ package validate
 import (
 	"strings"
 
-	"github.com/sqlc-dev/sqlc/internal/sql/ast"
-	"github.com/sqlc-dev/sqlc/internal/sql/catalog"
-	"github.com/sqlc-dev/sqlc/internal/sql/sqlerr"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/ast"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/catalog"
+	"github.com/rlpeck/crdb-sqlc/internal/sql/sqlerr"
 )
 
 const excludedTable = "EXCLUDED"

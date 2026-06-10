@@ -8,7 +8,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	golang "github.com/sqlc-dev/sqlc/internal/codegen/golang/opts"
+	golang "github.com/rlpeck/crdb-sqlc/internal/codegen/golang/opts"
 )
 
 type versionSetting struct {
