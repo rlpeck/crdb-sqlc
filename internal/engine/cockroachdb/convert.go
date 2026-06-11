@@ -505,6 +505,10 @@ func (c *cc) convertExpr(node tree.Expr) ast.Node {
 		return c.convertExpr(n.Expr)
 	case *tree.CaseExpr:
 		return c.convertCaseExpr(n)
+	case *tree.CoalesceExpr:
+		// COALESCE/IFNULL: type (and any parameter's type) comes from the
+		// arguments, so use CoalesceExpr for sibling-based inference.
+		return &ast.CoalesceExpr{Args: c.convertExprList(n.Exprs)}
 	case *tree.CastExpr:
 		typeName, _ := convertTypeRef(n.Type)
 		return &ast.TypeCast{
@@ -631,6 +635,22 @@ func (c *cc) convertFuncExpr(n *tree.FuncExpr) ast.Node {
 		return c.convertSqlcParam(n, name)
 	}
 
+	// GREATEST/LEAST derive their type (and any parameter's type) from their
+	// arguments, not a fixed catalog signature. Convert them to MinMaxExpr so a
+	// parameter like GREATEST(col, @p) infers col's type instead of falling back
+	// to interface{}. (COALESCE is handled in convertExpr — CockroachDB parses
+	// it as its own node, not a FuncExpr.)
+	if schema == "" {
+		switch name {
+		case "greatest", "least":
+			op := ast.MinMaxOp(0) // IS_GREATEST
+			if name == "least" {
+				op = ast.MinMaxOp(1) // IS_LEAST
+			}
+			return &ast.MinMaxExpr{Op: op, Args: c.convertExprList(n.Exprs)}
+		}
+	}
+
 	items := []ast.Node{}
 	if schema != "" {
 		items = append(items, NewIdentifier(schema))
@@ -653,6 +673,14 @@ func (c *cc) convertFuncExpr(n *tree.FuncExpr) ast.Node {
 		Args:     args,
 		AggStar:  aggStar,
 	}
+}
+
+func (c *cc) convertExprList(exprs tree.Exprs) *ast.List {
+	list := &ast.List{}
+	for _, e := range exprs {
+		list.Items = append(list.Items, c.convertExpr(e))
+	}
+	return list
 }
 
 func (c *cc) funcName(n *tree.FuncExpr) (schema, name string) {

@@ -183,6 +183,23 @@ func TestArrayCastParam(t *testing.T) {
 	}
 }
 
+func TestGreatestLeastCoalesce(t *testing.T) {
+	// GREATEST/LEAST -> MinMaxExpr and COALESCE -> CoalesceExpr so that a
+	// parameter argument infers its type from the sibling args (e.g.
+	// GREATEST(col, @p)) instead of an unknown function signature -> interface{}.
+	raw := parseOne(t, "SELECT GREATEST(a, $1), LEAST(b, $2), COALESCE(c, $3) FROM t")
+	items := raw.Stmt.(*ast.SelectStmt).TargetList.Items
+	if _, ok := items[0].(*ast.ResTarget).Val.(*ast.MinMaxExpr); !ok {
+		t.Errorf("GREATEST: got %T, want *ast.MinMaxExpr", items[0].(*ast.ResTarget).Val)
+	}
+	if _, ok := items[1].(*ast.ResTarget).Val.(*ast.MinMaxExpr); !ok {
+		t.Errorf("LEAST: got %T, want *ast.MinMaxExpr", items[1].(*ast.ResTarget).Val)
+	}
+	if _, ok := items[2].(*ast.ResTarget).Val.(*ast.CoalesceExpr); !ok {
+		t.Errorf("COALESCE: got %T, want *ast.CoalesceExpr", items[2].(*ast.ResTarget).Val)
+	}
+}
+
 func TestInsertUpdateDelete(t *testing.T) {
 	if _, ok := parseOne(t, "INSERT INTO foo (id, name) VALUES ($1, $2)").Stmt.(*ast.InsertStmt); !ok {
 		t.Fatal("expected *ast.InsertStmt")
