@@ -134,6 +134,33 @@ func TestCreateTable(t *testing.T) {
 	}
 }
 
+func TestArrayColumn(t *testing.T) {
+	// Array columns must carry IsArray + ArrayDims (read by the catalog) and
+	// ArrayBounds (read by the type-name path) so codegen emits []T, not T.
+	raw := parseOne(t, "CREATE TABLE t (tags STRING[], scores INT8[], amounts DECIMAL(10,2)[])")
+	stmt := raw.Stmt.(*ast.CreateTableStmt)
+	if len(stmt.Cols) != 3 {
+		t.Fatalf("expected 3 columns, got %d", len(stmt.Cols))
+	}
+	for _, col := range stmt.Cols {
+		if !col.IsArray {
+			t.Errorf("col %q: IsArray = false, want true", col.Colname)
+		}
+		if col.ArrayDims != 1 {
+			t.Errorf("col %q: ArrayDims = %d, want 1", col.Colname, col.ArrayDims)
+		}
+		if col.TypeName.ArrayBounds == nil || len(col.TypeName.ArrayBounds.Items) != 1 {
+			t.Errorf("col %q: ArrayBounds not populated", col.Colname)
+		}
+	}
+
+	// A scalar column must not be flagged as an array.
+	col := parseOne(t, "CREATE TABLE t (name STRING)").Stmt.(*ast.CreateTableStmt).Cols[0]
+	if col.IsArray || col.ArrayDims != 0 {
+		t.Errorf("scalar column flagged as array: IsArray=%v ArrayDims=%d", col.IsArray, col.ArrayDims)
+	}
+}
+
 func TestInsertUpdateDelete(t *testing.T) {
 	if _, ok := parseOne(t, "INSERT INTO foo (id, name) VALUES ($1, $2)").Stmt.(*ast.InsertStmt); !ok {
 		t.Fatal("expected *ast.InsertStmt")

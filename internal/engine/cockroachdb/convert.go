@@ -399,11 +399,22 @@ func (c *cc) convertCreateTable(n *tree.CreateTable) ast.Node {
 			continue
 		}
 		name, isArray := normalizeTypeName(typeRefString(col.Type))
+		typeName := &ast.TypeName{Name: name}
+		dims := 0
+		if isArray {
+			// CockroachDB arrays are single-dimensional. Set both ArrayDims
+			// (read by the catalog via defineColumn) and ArrayBounds (read by
+			// the type-name path in to_column.go) so downstream codegen emits
+			// []T for array columns.
+			dims = 1
+			typeName.ArrayBounds = &ast.List{Items: []ast.Node{&ast.Integer{Ival: -1}}}
+		}
 		stmt.Cols = append(stmt.Cols, &ast.ColumnDef{
 			Colname:    string(col.Name),
-			TypeName:   &ast.TypeName{Name: name},
+			TypeName:   typeName,
 			IsNotNull:  col.Nullable.Nullability == tree.NotNull || col.PrimaryKey.IsPrimaryKey,
 			IsArray:    isArray,
+			ArrayDims:  dims,
 			PrimaryKey: col.PrimaryKey.IsPrimaryKey,
 		})
 	}
