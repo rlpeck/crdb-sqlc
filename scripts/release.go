@@ -38,7 +38,7 @@ func main() {
 			"-a",
 			"-ldflags", x,
 			"-o", "/workspace/sqlc",
-			"./cmd/sqlc",
+			"./cmd/crdb-sqlc",
 		}
 		cmd := exec.Command("go", args...)
 		cmd.Env = os.Environ()

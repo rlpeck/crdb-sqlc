@@ -5,7 +5,7 @@
 For local development, install `sqlc` under an alias. We suggest `sqlc-dev`.
 
 ```
-go build -o ~/go/bin/sqlc-dev ./cmd/sqlc
+go build -o ~/go/bin/sqlc-dev ./cmd/crdb-sqlc
 ```
 
 Install `sqlc-gen-json` to avoid test failure.

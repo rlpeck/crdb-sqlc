@@ -158,7 +158,7 @@ make start             # Start database containers
 
 ```bash
 # Build main sqlc binary for development
-go build -o ~/go/bin/sqlc-dev ./cmd/sqlc
+go build -o ~/go/bin/sqlc-dev ./cmd/crdb-sqlc
 
 # Build JSON plugin (required for some tests)
 go build -o ~/go/bin/sqlc-gen-json ./cmd/sqlc-gen-json

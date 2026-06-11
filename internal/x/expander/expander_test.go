@@ -49,7 +49,7 @@ func (g *PostgreSQLColumnGetter) GetColumnNames(ctx context.Context, query strin
 // An earlier implementation pulled column metadata straight out of a prepared
 // statement via a forked mysql driver exposing StmtMetadata. That fork
 // required a `replace` directive in go.mod, which broke `go install
-// github.com/rlpeck/crdb-sqlc/cmd/sqlc@latest` (see
+// github.com/rlpeck/crdb-sqlc/cmd/crdb-sqlc@latest` (see
 // https://github.com/rlpeck/crdb-sqlc/issues/4397). Reading columns from sql.Rows
 // works with the upstream driver and keeps the test covering the same
 // behavior.

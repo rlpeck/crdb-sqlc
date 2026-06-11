@@ -11,10 +11,10 @@ import (
 // https://github.com/rlpeck/crdb-sqlc/issues/4397.
 //
 // When go.mod contains a replace directive, the Go toolchain refuses to run
-// `go install github.com/rlpeck/crdb-sqlc/cmd/sqlc@latest` (and the equivalent
+// `go install github.com/rlpeck/crdb-sqlc/cmd/crdb-sqlc@latest` (and the equivalent
 // `go run ...@latest`):
 //
-//	go: github.com/rlpeck/crdb-sqlc/cmd/sqlc@latest (in github.com/rlpeck/crdb-sqlc@v...):
+//	go: github.com/rlpeck/crdb-sqlc/cmd/crdb-sqlc@latest (in github.com/rlpeck/crdb-sqlc@v...):
 //	    The go.mod file for the module providing named packages contains one or
 //	    more replace directives. It must not contain directives that would cause
 //	    it to be interpreted differently than if it were the main module.
@@ -59,7 +59,7 @@ func TestGoModHasNoReplaceDirectives(t *testing.T) {
 
 	if len(offenders) > 0 {
 		t.Fatalf("go.mod must not contain replace directives; "+
-			"they break `go install github.com/rlpeck/crdb-sqlc/cmd/sqlc@latest`.\n"+
+			"they break `go install github.com/rlpeck/crdb-sqlc/cmd/crdb-sqlc@latest`.\n"+
 			"See https://github.com/rlpeck/crdb-sqlc/issues/4397\n%s",
 			strings.Join(offenders, "\n"))
 	}
