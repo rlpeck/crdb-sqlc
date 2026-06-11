@@ -161,6 +161,28 @@ func TestArrayColumn(t *testing.T) {
 	}
 }
 
+func TestArrayCastParam(t *testing.T) {
+	// An array cast (e.g. @ids::int8[]) must carry ArrayBounds so the parameter
+	// resolves to []T, not T.
+	raw := parseOne(t, "SELECT id FROM t WHERE tags = @vals::int8[]")
+	cast, ok := raw.Stmt.(*ast.SelectStmt).WhereClause.(*ast.A_Expr).Rexpr.(*ast.TypeCast)
+	if !ok {
+		t.Fatalf("expected *ast.TypeCast on rhs, got %T", raw.Stmt.(*ast.SelectStmt).WhereClause.(*ast.A_Expr).Rexpr)
+	}
+	if cast.TypeName.Name != "int8" {
+		t.Errorf("cast type name = %q, want int8", cast.TypeName.Name)
+	}
+	if cast.TypeName.ArrayBounds == nil || len(cast.TypeName.ArrayBounds.Items) != 1 {
+		t.Fatalf("cast TypeName.ArrayBounds not set for int8[]")
+	}
+
+	// A scalar cast must not gain array bounds.
+	c2 := parseOne(t, "SELECT id FROM t WHERE x = @v::int8").Stmt.(*ast.SelectStmt).WhereClause.(*ast.A_Expr).Rexpr.(*ast.TypeCast)
+	if c2.TypeName.ArrayBounds != nil {
+		t.Errorf("scalar cast wrongly has ArrayBounds")
+	}
+}
+
 func TestInsertUpdateDelete(t *testing.T) {
 	if _, ok := parseOne(t, "INSERT INTO foo (id, name) VALUES ($1, $2)").Stmt.(*ast.InsertStmt); !ok {
 		t.Fatal("expected *ast.InsertStmt")

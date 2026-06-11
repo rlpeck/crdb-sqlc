@@ -398,22 +398,12 @@ func (c *cc) convertCreateTable(n *tree.CreateTable) ast.Node {
 		if !ok {
 			continue
 		}
-		name, isArray := normalizeTypeName(typeRefString(col.Type))
-		typeName := &ast.TypeName{Name: name}
-		dims := 0
-		if isArray {
-			// CockroachDB arrays are single-dimensional. Set both ArrayDims
-			// (read by the catalog via defineColumn) and ArrayBounds (read by
-			// the type-name path in to_column.go) so downstream codegen emits
-			// []T for array columns.
-			dims = 1
-			typeName.ArrayBounds = &ast.List{Items: []ast.Node{&ast.Integer{Ival: -1}}}
-		}
+		typeName, dims := convertTypeRef(col.Type)
 		stmt.Cols = append(stmt.Cols, &ast.ColumnDef{
 			Colname:    string(col.Name),
 			TypeName:   typeName,
 			IsNotNull:  col.Nullable.Nullability == tree.NotNull || col.PrimaryKey.IsPrimaryKey,
-			IsArray:    isArray,
+			IsArray:    dims > 0,
 			ArrayDims:  dims,
 			PrimaryKey: col.PrimaryKey.IsPrimaryKey,
 		})
@@ -426,6 +416,22 @@ func typeRefString(ref tree.ResolvableTypeReference) string {
 		return ""
 	}
 	return ref.SQLString()
+}
+
+// convertTypeRef builds an ast.TypeName from a CockroachDB type reference,
+// returning the array dimension count (0 for scalars). Array types set
+// ArrayBounds so that both the catalog (defineColumn) and the type-name path
+// (to_column.go) treat the value as []T — this matters for array columns *and*
+// array casts like @ids::int8[].
+func convertTypeRef(ref tree.ResolvableTypeReference) (*ast.TypeName, int) {
+	name, isArray := normalizeTypeName(typeRefString(ref))
+	tn := &ast.TypeName{Name: name}
+	if isArray {
+		// CockroachDB arrays are single-dimensional.
+		tn.ArrayBounds = &ast.List{Items: []ast.Node{&ast.Integer{Ival: -1}}}
+		return tn, 1
+	}
+	return tn, 0
 }
 
 // normalizeTypeName reduces a CockroachDB type spelling to a canonical base
@@ -500,10 +506,10 @@ func (c *cc) convertExpr(node tree.Expr) ast.Node {
 	case *tree.CaseExpr:
 		return c.convertCaseExpr(n)
 	case *tree.CastExpr:
-		name, _ := normalizeTypeName(typeRefString(n.Type))
+		typeName, _ := convertTypeRef(n.Type)
 		return &ast.TypeCast{
 			Arg:      c.convertExpr(n.Expr),
-			TypeName: &ast.TypeName{Name: name},
+			TypeName: typeName,
 		}
 	default:
 		return todo("convertExpr", node)
